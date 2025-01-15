@@ -159,25 +159,22 @@ namespace cuteBot {
             pins.i2cWriteBuffer(0x30, 100);  //写入左轮
         }
         else {
-            buf[0] = 0x00;
-            buf[1] = 0x02;
-            buf[2] = 0x00;
-            buf[3] = lspeed;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
         }
         if (rspeed > 0) {
-            buf[0] = 0x00;
-            buf[1] = 0x00;
-            buf[2] = 0x01;
-            buf[3] = rspeed;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
         }
         else {
-            buf[0] = 0x00;
-            buf[1] = 0x00;
-            buf[2] = 0x02;
-            buf[3] = rspeed;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
         }
 
     }
@@ -219,11 +216,10 @@ namespace cuteBot {
     export function forward(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x00;
-        buf[1] = 0x01;
-        buf[2] = 0x01;
-        buf[3] = 100;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
     }
 
 
@@ -235,11 +231,10 @@ namespace cuteBot {
     export function backforward(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x00;
-        buf[1] = 0x02;
-        buf[2] = 0x02;
-        buf[3] = 60;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
     }
     /**
     * TODO: full speed turnleft.
