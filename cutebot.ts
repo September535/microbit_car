@@ -3,7 +3,7 @@
  */
 //% weight=5 color=#0fbc11  icon="\uf207" 
 namespace cuteBot {
-    const STM8_ADDRESSS = 0x10
+    const STM8_ADDRESSS = 0x30
     let IR_Val = 0
     let _initEvents = true
     /**
@@ -153,31 +153,31 @@ namespace cuteBot {
             rspeed = -100;
         }
         if (lspeed > 0) {
-            buf[0] = 0x01;    //左右轮 0x01左轮  0x02右轮
-            buf[1] = 0x02;		//正反转0x02前进  0x01后退
-            buf[2] = lspeed;	//速度
-            buf[3] = 0;			//补位
+            buf[0] = 0x00;    //左右轮 0x01左轮  0x02右轮
+            buf[1] = 0x01;		//正反转0x02前进  0x01后退
+            buf[2] = 0x00;		//正反转0x02前进  0x01后退
+            buf[3] = lspeed;	//速度
             pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
         else {
-            buf[0] = 0x01;
-            buf[1] = 0x01;
-            buf[2] = lspeed * -1;
-            buf[3] = 0;			//补位
+            buf[0] = 0x00;
+            buf[1] = 0x02;
+            buf[2] = 0x00;
+            buf[3] = lspeed;			//补位
             pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
         if (rspeed > 0) {
-            buf[0] = 0x02;
-            buf[1] = 0x02;
-            buf[2] = rspeed;
-            buf[3] = 0;			//补位
+            buf[0] = 0x00;
+            buf[1] = 0x00;
+            buf[2] = 0x01;
+            buf[3] = rspeed;			//补位
             pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
         else {
-            buf[0] = 0x02;
-            buf[1] = 0x01;
-            buf[2] = rspeed * -1;
-            buf[3] = 0;			//补位
+            buf[0] = 0x00;
+            buf[1] = 0x00;
+            buf[2] = 0x02;
+            buf[3] = rspeed;			//补位
             pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
 
