@@ -220,12 +220,10 @@ namespace cuteBot {
     export function forward(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x01;
-        buf[1] = 0x02;
-        buf[2] = 80;
-        buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
-        buf[0] = 0x02;
+        buf[0] = 0x00;
+        buf[1] = 0x01;
+        buf[2] = 0x01;
+        buf[3] = 100;
         pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
 
@@ -238,14 +236,11 @@ namespace cuteBot {
     export function backforward(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x01;
-        buf[1] = 0x01;
-        buf[2] = 80;
-        buf[3] = 0;
+        buf[0] = 0x00;
+        buf[1] = 0x02;
+        buf[2] = 0x02;
+        buf[3] = 100;
         pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
-        buf[0] = 0x02;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
-
     }
     /**
     * TODO: full speed turnleft.
@@ -255,13 +250,10 @@ namespace cuteBot {
     export function turnleft(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x02;
+        buf[0] = 0x00;
         buf[1] = 0x02;
-        buf[2] = 80;
-        buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
-        buf[0] = 0x01;
-        buf[2] = 0;
+        buf[2] = 0x01;
+        buf[3] = 80;
         pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
     /**
@@ -272,10 +264,10 @@ namespace cuteBot {
     export function turnright(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x01;
+        buf[0] = 0x00;
         buf[1] = 0x02;
-        buf[2] = 80;
-        buf[3] = 0;
+        buf[2] = 0x01;
+        buf[3] = 75;
         pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         buf[0] = 0x02;
         buf[2] = 0;
