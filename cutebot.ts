@@ -238,7 +238,7 @@ namespace cuteBot {
         buf[0] = 0x00;
         buf[1] = 0x02;
         buf[2] = 0x02;
-        buf[3] = 100;
+        buf[3] = 60;
         pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
     /**
