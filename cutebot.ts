@@ -216,10 +216,10 @@ namespace cuteBot {
     export function forward(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
+        pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
+        pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+        pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
+        pins.i2cWriteBuffer(0x30, 100);  //写入左轮
     }
 
 
