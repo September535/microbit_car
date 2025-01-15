@@ -142,41 +142,26 @@ namespace cuteBot {
     //% weight=100
     export function motors(lspeed: number = 50, rspeed: number = 50): void {
         let buf = pins.createBuffer(4);
-        if (lspeed > 100) {
-            lspeed = 100;
-        } else if (lspeed < -100) {
-            lspeed = -100;
-        }
-        if (rspeed > 100) {
-            rspeed = 100;
-        } else if (rspeed < -100) {
-            rspeed = -100;
-        }
-        if (lspeed > 0) {
-            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
-        }
-        else {
-            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
-        }
-        if (rspeed > 0) {
-            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
-        }
-        else {
-            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
+        let d1: number, d2: number, speed: number;
+
+        // 根据速度设置 d1 和 d2 的值
+        d1 = (lspeed > 0) ? 1 : (lspeed < 0) ? 2 : 0; // 0 - 停止，1 - 前进，2 - 后退
+        d2 = (rspeed > 0) ? 1 : (rspeed < 0) ? 2 : 0; // 0 - 停止，1 - 前进，2 - 后退
+        speed = Math.max(Math.abs(lspeed), Math.abs(rspeed)); // 获取更高的绝对速度值
+
+        // 限制速度在0-100之间
+        if (speed > 100) {
+            speed = 100;
         }
 
+        // 开始构建数据包
+        buf[0] = 0x00; // 数据包头
+        buf[1] = d1;   // 第一个电机控制指令
+        buf[2] = d2;   // 第二个电机控制指令
+        buf[3] = speed; // PWM速度调节值
+
+        // 发送数据包
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
     /**
     * TODO: Full speed operation lasts for 10 seconds,speed is 100.
@@ -214,12 +199,7 @@ namespace cuteBot {
     //% blockId=cutebot_forward block="Go straight at full speed"
     //% weight=90
     export function forward(): void {
-        // Add code here
-        let buf = pins.createBuffer(4);
-        pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
-        pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-        pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-        pins.i2cWriteBuffer(0x30, 100);  //写入左轮
+        motors(100, 100); // 直接调用 motors 函数
     }
 
 
@@ -231,10 +211,14 @@ namespace cuteBot {
     export function backforward(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-            pins.i2cWriteBuffer(0x30, 0x00);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 0x01);  //写入左轮
-            pins.i2cWriteBuffer(0x30, 100);  //写入左轮
+        buf[0] = 0x01;
+        buf[1] = 0x01;
+        buf[2] = 80;
+        buf[3] = 0;
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        buf[0] = 0x02;
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+
     }
     /**
     * TODO: full speed turnleft.
@@ -244,10 +228,13 @@ namespace cuteBot {
     export function turnleft(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x00;
+        buf[0] = 0x02;
         buf[1] = 0x02;
-        buf[2] = 0x01;
-        buf[3] = 80;
+        buf[2] = 80;
+        buf[3] = 0;
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        buf[0] = 0x01;
+        buf[2] = 0;
         pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
     /**
@@ -258,10 +245,10 @@ namespace cuteBot {
     export function turnright(): void {
         // Add code here
         let buf = pins.createBuffer(4);
-        buf[0] = 0x00;
+        buf[0] = 0x01;
         buf[1] = 0x02;
-        buf[2] = 0x01;
-        buf[3] = 75;
+        buf[2] = 80;
+        buf[3] = 0;
         pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         buf[0] = 0x02;
         buf[2] = 0;
