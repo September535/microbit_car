@@ -142,26 +142,45 @@ namespace cuteBot {
     //% weight=100
     export function motors(lspeed: number = 50, rspeed: number = 50): void {
         let buf = pins.createBuffer(4);
-        let d1: number, d2: number, speed: number;
-
-        // 根据速度设置 d1 和 d2 的值
-        d1 = (lspeed > 0) ? 1 : (lspeed < 0) ? 2 : 0; // 0 - 停止，1 - 前进，2 - 后退
-        d2 = (rspeed > 0) ? 1 : (rspeed < 0) ? 2 : 0; // 0 - 停止，1 - 前进，2 - 后退
-        speed = Math.max(Math.abs(lspeed), Math.abs(rspeed)); // 获取更高的绝对速度值
-
-        // 限制速度在0-100之间
-        if (speed > 100) {
-            speed = 100;
+        if (lspeed > 100) {
+            lspeed = 100;
+        } else if (lspeed < -100) {
+            lspeed = -100;
+        }
+        if (rspeed > 100) {
+            rspeed = 100;
+        } else if (rspeed < -100) {
+            rspeed = -100;
+        }
+        if (lspeed > 0) {
+            buf[0] = 0x01;    //左右轮 0x01左轮  0x02右轮
+            buf[1] = 0x02;		//正反转0x02前进  0x01后退
+            buf[2] = lspeed;	//速度
+            buf[3] = 0;			//补位
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
+        }
+        else {
+            buf[0] = 0x01;
+            buf[1] = 0x01;
+            buf[2] = lspeed * -1;
+            buf[3] = 0;			//补位
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
+        }
+        if (rspeed > 0) {
+            buf[0] = 0x02;
+            buf[1] = 0x02;
+            buf[2] = rspeed;
+            buf[3] = 0;			//补位
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
+        }
+        else {
+            buf[0] = 0x02;
+            buf[1] = 0x01;
+            buf[2] = rspeed * -1;
+            buf[3] = 0;			//补位
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
         }
 
-        // 开始构建数据包
-        buf[0] = 0x00; // 数据包头
-        buf[1] = d1;   // 第一个电机控制指令
-        buf[2] = d2;   // 第二个电机控制指令
-        buf[3] = speed; // PWM速度调节值
-
-        // 发送数据包
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
     /**
     * TODO: Full speed operation lasts for 10 seconds,speed is 100.
@@ -199,7 +218,15 @@ namespace cuteBot {
     //% blockId=cutebot_forward block="Go straight at full speed"
     //% weight=90
     export function forward(): void {
-        motors(100, 100); // 直接调用 motors 函数
+        // Add code here
+        let buf = pins.createBuffer(4);
+        buf[0] = 0x01;
+        buf[1] = 0x02;
+        buf[2] = 80;
+        buf[3] = 0;
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        buf[0] = 0x02;
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
     }
 
 
@@ -215,9 +242,9 @@ namespace cuteBot {
         buf[1] = 0x01;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         buf[0] = 0x02;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
 
     }
     /**
@@ -232,10 +259,10 @@ namespace cuteBot {
         buf[1] = 0x02;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         buf[0] = 0x01;
         buf[2] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
     }
     /**
     * TODO: full speed turnright.
@@ -249,10 +276,10 @@ namespace cuteBot {
         buf[1] = 0x02;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         buf[0] = 0x02;
         buf[2] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
     }
     /**
     * TODO: stopcar
@@ -294,9 +321,9 @@ namespace cuteBot {
             buf[1] = r;
             buf[2] = g * 0.38;
             buf[3] = b;
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
             buf[0] = 0x08;
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         }
         else {
             if (light == 0) {
@@ -308,7 +335,7 @@ namespace cuteBot {
             buf[1] = r;
             buf[2] = g;
             buf[3] = b;
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         }
 
     }
@@ -324,9 +351,9 @@ namespace cuteBot {
         buf[1] = 0;
         buf[2] = 0;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         buf[0] = 0x08;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
     }
 
     /**
@@ -437,14 +464,14 @@ namespace cuteBot {
             buf[1] = angle;
             buf[2] = 0;
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         }
         else {
             buf[0] = 0x06;
             buf[1] = angle;
             buf[2] = 0;
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         }
 
     }
