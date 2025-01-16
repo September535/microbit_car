@@ -3,7 +3,7 @@
  */
 //% weight=5 color=#0fbc11  icon="\uf207" 
 namespace cuteBot {
-    const STM8_ADDRESSS = 0x30
+    const STM8_ADDRESSS = 0x18
     let IR_Val = 0
     let _initEvents = true
     /**
@@ -157,28 +157,28 @@ namespace cuteBot {
             buf[1] = 0x02;		//正反转0x02前进  0x01后退
             buf[2] = lspeed;	//速度
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
         else {
             buf[0] = 0x01;
             buf[1] = 0x01;
             buf[2] = lspeed * -1;
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
         if (rspeed > 0) {
             buf[0] = 0x02;
             buf[1] = 0x02;
             buf[2] = rspeed;
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
         else {
             buf[0] = 0x02;
             buf[1] = 0x01;
             buf[2] = rspeed * -1;
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);  //写入左轮
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);  //写入左轮
         }
 
     }
@@ -224,9 +224,9 @@ namespace cuteBot {
         buf[1] = 0x02;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         buf[0] = 0x02;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
 
 
@@ -242,9 +242,9 @@ namespace cuteBot {
         buf[1] = 0x01;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         buf[0] = 0x02;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
 
     }
     /**
@@ -259,10 +259,10 @@ namespace cuteBot {
         buf[1] = 0x02;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         buf[0] = 0x01;
         buf[2] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
     /**
     * TODO: full speed turnright.
@@ -276,10 +276,10 @@ namespace cuteBot {
         buf[1] = 0x02;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         buf[0] = 0x02;
         buf[2] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
     /**
     * TODO: stopcar
@@ -321,9 +321,9 @@ namespace cuteBot {
             buf[1] = r;
             buf[2] = g * 0.38;
             buf[3] = b;
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
             buf[0] = 0x08;
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         }
         else {
             if (light == 0) {
@@ -335,7 +335,7 @@ namespace cuteBot {
             buf[1] = r;
             buf[2] = g;
             buf[3] = b;
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         }
 
     }
@@ -351,9 +351,9 @@ namespace cuteBot {
         buf[1] = 0;
         buf[2] = 0;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         buf[0] = 0x08;
-        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
     }
 
     /**
@@ -464,14 +464,14 @@ namespace cuteBot {
             buf[1] = angle;
             buf[2] = 0;
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         }
         else {
             buf[0] = 0x06;
             buf[1] = angle;
             buf[2] = 0;
             buf[3] = 0;			//补位
-            pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
+            pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
         }
 
     }
