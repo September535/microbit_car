@@ -3,7 +3,7 @@
  */
 //% weight=5 color=#0fbc11  icon="\uf207" 
 namespace cuteBot {
-    const STM8_ADDRESSS = 0x18
+    const STM8_ADDRESSS = 0x30
     let IR_Val = 0
     let _initEvents = true
     /**
@@ -242,9 +242,9 @@ namespace cuteBot {
         buf[1] = 0x01;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(0x30, buf);
         buf[0] = 0x02;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(0x30, buf);
 
     }
     /**
@@ -259,10 +259,10 @@ namespace cuteBot {
         buf[1] = 0x02;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(0x24, buf);
         buf[0] = 0x01;
         buf[2] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(0x24, buf);
     }
     /**
     * TODO: full speed turnright.
@@ -276,10 +276,10 @@ namespace cuteBot {
         buf[1] = 0x02;
         buf[2] = 80;
         buf[3] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
         buf[0] = 0x02;
         buf[2] = 0;
-        pins.i2cWriteBuffer(STM8_ADDRESSS, buf);
+        pins.i2cWriteBuffer(STM8_ADDRESSS>>1, buf);
     }
     /**
     * TODO: stopcar
